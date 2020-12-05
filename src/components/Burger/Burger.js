@@ -8,7 +8,7 @@ const burger = (props) => {
   Object.keys(props.ingredients).forEach((igKey) => {
     if (props.ingredients[igKey].amount !== 0) {
       for (let i = 0; i < props.ingredients[igKey].amount; i++) {
-        return ingredientsArray.push(
+        ingredientsArray.push(
           <BurgerIngredient type={igKey} key={igKey + i} />
         );
       }

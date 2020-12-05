@@ -1,6 +1,7 @@
 import * as actionTypes from "./actionTypes";
 // import axios from "../../axios-orders";
 import axios from "axios";
+import order from "../../components/Order/Order";
 
 export const purchaseBurgerSuccess = (id, orderData) => {
   return {
@@ -24,6 +25,7 @@ export const purchaseBurgerStart = () => {
 };
 
 export const purchaseBurger = (orderData) => {
+  console.log(orderData);
   return (dispatch) => {
     dispatch(purchaseBurgerStart());
     axios
@@ -65,25 +67,29 @@ export const fetchOrdersStart = () => {
 };
 
 export const fetchOrders = (token, userId) => {
+  console.log(token, userId);
   return (dispatch) => {
     dispatch(fetchOrdersStart());
-    const userDetails = {
-      token,
-      userId,
-    };
-    // const queryParams =
-    //   "?auth=" + token + '&orderBy="userId"&equalTo="' + userId + '"';
+
     axios
-      .get("http://localhost:5000/orders", userDetails)
+      .get("http://localhost:5000/orders", {
+        params: {
+          token,
+          userId,
+        },
+      })
       .then((res) => {
-        const fetchedOrders = [];
-        for (let key in res.data) {
-          fetchedOrders.push({
-            ...res.data[key],
-            id: key,
-          });
-        }
-        dispatch(fetchOrdersSuccess(fetchedOrders));
+        // console.log(res);
+        // const fetchedOrders = res.data.map(order => res.data
+
+        // })
+        // for (let key in res.data) {
+        //   fetchedOrders.push({
+        //     ...res.data[key],
+        //     id: key,
+        //   });
+        // }
+        dispatch(fetchOrdersSuccess(res.data));
       })
       .catch((err) => {
         dispatch(fetchOrdersFail(err));
