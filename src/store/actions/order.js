@@ -1,5 +1,6 @@
-import * as actionTypes from './actionTypes';
-import axios from '../../axios-orders';
+import * as actionTypes from "./actionTypes";
+// import axios from "../../axios-orders";
+import axios from "axios";
 
 export const purchaseBurgerSuccess = (id, orderData) => {
   return {
@@ -22,12 +23,13 @@ export const purchaseBurgerStart = () => {
   };
 };
 
-export const purchaseBurger = (orderData, token) => {
+export const purchaseBurger = (orderData) => {
   return (dispatch) => {
     dispatch(purchaseBurgerStart());
     axios
-      .post('/orders.json?auth=' + token, orderData)
+      .post("http://localhost:5000/orders", orderData)
       .then((response) => {
+        console.log(response);
         dispatch(purchaseBurgerSuccess(response.data.name, orderData));
       })
       .catch((error) => {
@@ -65,10 +67,14 @@ export const fetchOrdersStart = () => {
 export const fetchOrders = (token, userId) => {
   return (dispatch) => {
     dispatch(fetchOrdersStart());
-    const queryParams =
-      '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+    const userDetails = {
+      token,
+      userId,
+    };
+    // const queryParams =
+    //   "?auth=" + token + '&orderBy="userId"&equalTo="' + userId + '"';
     axios
-      .get('/orders.json' + queryParams)
+      .get("http://localhost:5000/orders", userDetails)
       .then((res) => {
         const fetchedOrders = [];
         for (let key in res.data) {
