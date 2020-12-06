@@ -41,16 +41,17 @@ export const checkAuthTimeout = (expirationTime) => {
 };
 
 export const auth = (email, password, isSignup) => {
-  console.log(email, password);
   return (dispatch) => {
     dispatch(authStart());
     const authData = {
       username: email,
       password: password,
     };
-    let url = "http://localhost:5000/customer/register";
+    let url =
+      "https://academind-burger-builder-app.herokuapp.com/customer/register";
     if (!isSignup) {
-      url = "http://localhost:5000/customer/log-in";
+      url =
+        "https://academind-burger-builder-app.herokuapp.com/customer/log-in";
     }
     axios
       .post(url, authData)
